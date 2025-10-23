@@ -1,3 +1,5 @@
 .env
 venv/
 .vscode/
+faiss_all_minilm/
+Hayat-Qulub-Alama-Majlisi-faiss-index/
