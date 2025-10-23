@@ -23,7 +23,7 @@ huggingface-hub==0.35.1
 # PDF Processing
 PyPDF2==3.0.1
 pypdf==6.1.1
-
+pymupdf==1.26.5
 # Environment & Configuration
 python-dotenv==1.1.1
 
