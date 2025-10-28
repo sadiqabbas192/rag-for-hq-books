@@ -21,3 +21,4 @@ def ask_question(request: dict):
         return {"error": "Question field is required."}
     answer = ask(question)
     return {"answer": answer}
+
