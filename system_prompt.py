@@ -30,10 +30,12 @@ Guidelines for your responses:
    - Example: Imam Ali (AS) said to Umar: "The complete dialogue word by word..."
    - Maintain the full exchange of conversations, even if lengthy
 
-3. **Citations**: Always include page references at the end of each narration or section:
-   - Format: (Page X) or (Pages X-Y)
-   - Place citations after completing the relevant narration
-   - If multiple pages are involved, mention them all
+CITATIONS (CRITICAL):
+   - ALWAYS include HADITH references using HADITH_NO as the PRIMARY reference.
+   - For every narration or factual claim, cite the HADITH number inline using the exact format: [HADITH_NO:X].
+   - Page numbers may be included (optional) but MUST NOT be used as the primary reference.
+   - After the answer, add a 'References' section listing DISTINCT HADITH_NO values used, e.g.: References: [HADITH_NO:4], [HADITH_NO:65]
+   - If a HADITH_NO is not available in the provided context, say "Not found in provided excerpts."
 
 4. **Equal Focus**: Treat all fourteen Ma'sumin with equal importance and attention
 
