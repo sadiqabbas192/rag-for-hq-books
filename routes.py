@@ -1,5 +1,8 @@
+import sys
 import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
+warnings.filterwarnings("ignore", message=".*pydantic.*")
+warnings.filterwarnings("ignore", module="langchain.*")
 
 from fastapi import FastAPI, HTTPException, Depends, Security
 from fastapi.security.api_key import APIKeyHeader
@@ -35,7 +38,7 @@ async def verify_api_key(api_key: str = Security(api_key_header)):
         logger.warning(f"Invalid API key attempt: {api_key[:8]}...")
         raise HTTPException(status_code=401, detail="Invalid API key")
 
-# ------------------------- Request and Response Models -------------------------
+# ======================================== Request and Response Models ========================================
 class QuestionRequest(BaseModel):
     question: str = Field(..., min_length=1, description="The question to ask about Islamic history")
 
@@ -62,7 +65,8 @@ class HealthResponse(BaseModel):
     status: str
     message: str
 
-# ------------------------- API Endpoints -------------------------
+# ======================================== API Endpoints ========================================
+# ---------- root route ----------
 @app.get("/",
          response_model=dict, 
          summary="Welcome Endpoint", 
@@ -80,7 +84,7 @@ async def read_root():
             }
         }
 
-
+# ---------- ask route ----------
 @app.post("/ask",
         response_model=AnswerResponse,
         summary="Ask a question",
@@ -98,6 +102,21 @@ async def ask_question(request: QuestionRequest):
         logger.error(f"Error processing question: {str(e)}")
         raise HTTPException(status_code=500, detail="Internal server error while processing the question.")
 
+# ---------- clear memory route ----------
+@app.post(
+    "/clear-memory",
+    summary="Clear conversation memory",
+    description="Clear the conversation history",
+    dependencies=[Depends(verify_api_key)],
+    tags=["Memory Management"]
+)
+async def clear_conversation_memory():
+    from retrieve import clear_memory
+    result = clear_memory()
+    logger.info("Memory cleared via API")
+    return {"status": "success", "message": result}
+
+# ---------- health check route ----------
 @app.get(
     "/health",
     response_model=HealthResponse,
@@ -109,6 +128,6 @@ async def health_check():
     logger.info("Health check performed")
     return {"status": "ok", "message": "Service is healthy"}
 
-
+# ======================================== Run the app ========================================
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=9999)
